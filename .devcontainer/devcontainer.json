@@ -27,8 +27,7 @@
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "vivaxy.vscode-conventional-commits",
-        "ms-azuretools.vscode-docker",
-        "cweijan.vscode-postgresql-client2"
+        "cweijan.vscode-mysql-client2"
       ],
       "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
@@ -45,12 +44,13 @@
       }
     }
   },
-  "forwardPorts": [8001, 8025, 6379, 5432],
+  "forwardPorts": [8001, 8025, 6379, 3307, 5433],
   "portsAttributes": {
     "8001": { "label": "Laravel" },
     "8025": { "label": "Mailpit UI" },
     "6379": { "label": "Redis" },
-    "5432": { "label": "PostgreSQL" }
+    "3307": { "label": "MySQL" },
+    "5433": { "label": "PostgreSQL" }
   },
   "remoteUser": "vscode",
   "containerUser": "vscode",

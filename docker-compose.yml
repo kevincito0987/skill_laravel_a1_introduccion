@@ -10,31 +10,43 @@ services:
     command: bash -lc "tail -f /dev/null"
     environment:
       - TZ=UTC
-      - DB_CONNECTION=pgsql
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_DATABASE=laravel
-      - DB_USERNAME=laravel
-      - DB_PASSWORD=admin
     ports:
       - "8001:8000"
     depends_on:
+      # Ahora depende de ambos servicios de base de datos
       - db
+      - pgsql
       - redis
       - mailpit
 
+  # Servicio de MySQL
   db:
-    image: postgres:15
-    container_name: laravel11-postgres-db
+    image: mysql:8.4.3
+    container_name: laravel11-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: admin
+    volumes:
+      - dbdata-laravel11:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  # Servicio de PostgreSQL (Nuevo)
+  pgsql:
+    image: postgres:16-alpine
+    container_name: laravel11-pgsql
     restart: unless-stopped
     environment:
       POSTGRES_DB: laravel
       POSTGRES_USER: laravel
       POSTGRES_PASSWORD: admin
     volumes:
-      - dbdata-laravel11-postgres:/var/lib/postgresql/data
+      - pgdata-laravel11:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   redis:
     image: redis:7
@@ -50,4 +62,6 @@ services:
       - "1025:1025" # SMTP
 
 volumes:
-  dbdata-laravel11-postgres:
+  dbdata-laravel11:
+  # Nuevo volumen para PostgreSQL
+  pgdata-laravel11:
