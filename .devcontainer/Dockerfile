@@ -3,11 +3,12 @@ FROM mcr.microsoft.com/devcontainers/php:1-8.3-bullseye
 
 USER root
 
-# Dependencias del sistema
+# Dependencias del sistema y cliente de PostgreSQL
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git unzip zip curl libpq-dev libicu-dev libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
     libonig-dev libxml2-dev libssl-dev \
     ca-certificates supervisor \
+    postgresql-client \
  && update-ca-certificates \
  && rm -rf /var/lib/apt/lists/*
 
@@ -21,7 +22,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
  && apt-get update && apt-get install -y nodejs \
  && npm i -g pnpm@9
 
-# Config PHP
+# Configuración de PHP
 COPY .devcontainer/php.ini /usr/local/etc/php/conf.d/zz-dev.ini
 COPY .devcontainer/xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug.ini
 
