@@ -9,6 +9,7 @@ class AuthController extends Controller
 {
     use ApiResponse;
 
+
     function login(Request $request) {
         return $this->ok("Hellou Camper!", ['example' => 'example data']);
     }
